@@ -19,7 +19,7 @@ class UpdateUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase
 	{
 		$this->user->email = $this->email ?? $this->user->email;
         $this->user->name = $this->name ?? $this->user->name;
-        $this->user->password = $this->password ?Hash::make($this->password) : $this->user->password;
+        $this->user->password = $this->password ? Hash::make($this->password) : $this->user->password;
         $this->user->save();
         return $this->user;
 	}

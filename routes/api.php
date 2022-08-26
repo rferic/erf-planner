@@ -29,17 +29,23 @@ Route::middleware(['auth:api'])->group(static function () {
         Route::prefix('me')->group(static function () {
             Route::get('/', [\App\Http\Controllers\Api\Core\MeController::class, 'me'])->name('show');
             Route::put('/', [\App\Http\Controllers\Api\Core\MeController::class, 'update'])->name('update');
-            Route::post('/image', [\App\Http\Controllers\Api\Core\MeController::class, 'postImage'])->name('post-image');
+            Route::post('image', [\App\Http\Controllers\Api\Core\MeController::class, 'postImage'])->name('postImage');
             Route::delete('/', [\App\Http\Controllers\Api\Core\MeController::class, 'destroy'])->name('destroy');
         });
 
         Route::get('permissions', \App\Http\Controllers\Api\Core\PermissionsController::class)->name('permissions');
 
-        Route::prefix('roles/{role}')->group(static function () {
-            Route::patch('give-permission', [\App\Http\Controllers\Api\Core\RolesController::class, 'givePermission'])->name('givePermission');
-            Route::patch('revoke-permission', [\App\Http\Controllers\Api\Core\RolesController::class, 'revokePermission'])->name('revokePermission');
-            Route::patch('sync-permissions', [\App\Http\Controllers\Api\Core\RolesController::class, 'syncPermissions'])->name('syncPermissions');
+        Route::resource('roles', \App\Http\Controllers\Api\Core\RolesController::class)->except(['show', 'create', 'edit']);
+        Route::prefix('roles')->group(static function () {
+            Route::patch('{role}/give-permission', [\App\Http\Controllers\Api\Core\RolesController::class, 'givePermission'])->name('givePermission');
+            Route::patch('{role}/revoke-permission', [\App\Http\Controllers\Api\Core\RolesController::class, 'revokePermission'])->name('revokePermission');
+            Route::patch('{role}/sync-permissions', [\App\Http\Controllers\Api\Core\RolesController::class, 'syncPermissions'])->name('syncPermissions');
         });
-        Route::resource('roles', \App\Http\Controllers\Api\Core\RolesController::class)->except(['create', 'edit']);
+
+        Route::resource('users', \App\Http\Controllers\Api\Core\UsersController::class)->except(['create', 'edit']);
+        Route::prefix('users')->group(static function () {
+            Route::post('{user}/image', [\App\Http\Controllers\Api\Core\UsersController::class, 'postImage'])->name('postImage');
+            Route::patch('{user}/role', [\App\Http\Controllers\Api\Core\UsersController::class, 'assignRole'])->name('assignRole');
+        });
     });
 });

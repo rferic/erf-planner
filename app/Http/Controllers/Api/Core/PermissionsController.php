@@ -18,7 +18,7 @@ class PermissionsController extends Controller
 
     public function __invoke(IndexRequest $request): JsonResponse
     {
-        $query = (new GetQueryBuilderUseCase($request->search))->action();
+        $query = (new GetQueryBuilderUseCase($request->input('search')))->action();
         $results = $this->list($query, new Pagination($request), new Sorting($request));
 
         return ApiResponse::done(

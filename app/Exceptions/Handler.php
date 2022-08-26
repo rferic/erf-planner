@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Labelgrup\LaravelUtilities\Helpers\ApiResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -45,15 +46,15 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->renderable(function (\Throwable $e, $request) {
+            $code = get_class($e) === NotFoundHttpException::class ? Response::HTTP_NOT_FOUND : Response::HTTP_INTERNAL_SERVER_ERROR;
+
             if (request()?->expectsJson()) {
                 return ApiResponse::fail(
                     $e->getMessage(),
                     config('app.debug')
                         ? ['line' => $e->getFile(), 'trace' => $e->getTrace()]
                         : [],
-                    array_key_exists($e->getCode(), Response::$statusTexts)
-                        ? $e->getCode()
-                        : Response::HTTP_INTERNAL_SERVER_ERROR
+                    array_key_exists($e->getCode(), Response::$statusTexts) ? $e->getCode() : $code
                 );
             }
         });

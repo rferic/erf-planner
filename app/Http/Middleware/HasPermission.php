@@ -19,7 +19,7 @@ class HasPermission
      */
     public function handle(Request $request, Closure $next, string $permission): \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
     {
-        abort_if(!$this->check($request, $permission), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(!$this->check($request, $permission), Response::HTTP_FORBIDDEN, 'Forbidden');
         return $next($request);
     }
 
