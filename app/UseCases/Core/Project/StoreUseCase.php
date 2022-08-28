@@ -26,7 +26,7 @@ class StoreUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase
             throw new \RuntimeException(__('Status not found'));
         }
 
-        return Project::create([
+        $project = Project::create([
             'name' => $this->name,
             'description' => $this->description,
             'deadline' => $this->deadline,
@@ -34,5 +34,13 @@ class StoreUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase
             'status_id' => $this->status->id,
             'author_id' => $this->author->id
         ]);
+        $this->attachAuthor($project);
+        $project->load('users');
+        return $project;
 	}
+
+    private function attachAuthor(Project $project): void
+    {
+        (new AttachUserUseCase($project, $this->author, 'manager'))->action();
+    }
 }

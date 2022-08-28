@@ -63,6 +63,9 @@ Route::middleware(['auth:api'])->group(static function () {
         Route::prefix('projects')->group(static function () {
             Route::patch('{project}/image', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'postImage'])->name('projects.postImage');
 
+            Route::patch('{project}/attach-user/{user}', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'attachUser'])->name('projects.attachUser');
+            Route::patch('{project}/detach-user/{user}', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'detachUser'])->name('projects.detachUser');
+
             Route::get('statuses', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'statuses'])->name('projects.statuses.index');
             Route::post('statuses', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'storeStatus'])->name('projects.statuses.store');
             Route::put('statuses/{status}', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'updateStatus'])->name('projects.statuses.update');

@@ -62,6 +62,6 @@ class MeController extends Controller
 
     private function response(User $user): JsonResponse
     {
-        return ApiResponse::response((new UserResource($user))->toArray(request()), Response::HTTP_OK);
+        return ApiResponse::response((new UserResource($user, ['projects']))->toArray(request()), Response::HTTP_OK);
     }
 }

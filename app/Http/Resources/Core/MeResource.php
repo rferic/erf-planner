@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources\Core;
 
+use App\Http\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 
-class MeResource extends JsonResource
+class MeResource extends Resource
 {
     public function __construct(
         \Illuminate\Contracts\Auth\Authenticatable|Model $resource,
@@ -23,7 +23,7 @@ class MeResource extends JsonResource
      */
     public function toArray($request): array
     {
-        $data = ['user' => new UserResource($this->resource)];
+        $data = ['user' => new UserResource($this->resource, ['projects'])];
 
         if ($this->userToken) {
             $data['token'] = [

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Core;
 
 use App\Http\Resources\Resource;
 
-class LanguageResource extends Resource
+class ProjectUserResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,10 @@ class LanguageResource extends Resource
     {
         return [
             'id' => $this->id,
+            'email' => $this->email,
             'name' => $this->name,
-            'iso_code' => $this->iso_code,
-            'enabled' => $this->enabled
+            'role' => $this->roles->first()?->name,
+            'type' => $this->pivot->type
         ];
     }
 }

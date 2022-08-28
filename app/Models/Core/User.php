@@ -46,4 +46,32 @@ class User extends Authenticatable
     ];
 
     protected string $guard_name = 'web';
+
+    public function createdProjects(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Project::class, 'author_id');
+    }
+
+    public function projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_user');
+    }
+
+    public function manager_projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_user')
+            ->wherePivot('type', 'manager');
+    }
+
+    public function worker_projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_user')
+            ->wherePivot('type', 'worker');
+    }
+
+    public function viewer_projects(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_user')
+            ->wherePivot('type', 'viewer');
+    }
 }

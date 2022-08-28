@@ -3,14 +3,19 @@
 namespace App\Http\Resources\Core;
 
 use App\Http\Resources\HasRelationships;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Resource;
 
-class ProjectResource extends JsonResource
+class ProjectResource extends Resource
 {
     use HasRelationships;
 
     public const AVAILABLE_RELATIONSHIPS = [
-        'client'
+        'author',
+        'client',
+        'users',
+        'managers',
+        'workers',
+        'viewers'
     ];
 
     public function __construct($resource, protected array $relationships = [])
@@ -34,12 +39,32 @@ class ProjectResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'web' => $this->web,
-            'author' => new UserResource($this->author),
-            'status' => new StatusResourceMinimal($this->status)
+            'status' => new StatusResourceMinimal($this->status),
+            'out_of_time' => $this->out_of_time,
         ];
+
+        if (in_array('author', $this->relationships, true)) {
+            $data['author'] = new UserResource($this->author);
+        }
 
         if (in_array('client', $this->relationships, true)) {
             $data['client'] = new ClientResource($this->client);
+        }
+
+        if (in_array('users', $this->relationships, true)) {
+            $data['users'] = ProjectUserResource::collection($this->users);
+        }
+
+        if (in_array('managers', $this->relationships, true)) {
+            $data['managers'] = ProjectUserResource::collection($this->managers);
+        }
+
+        if (in_array('workers', $this->relationships, true)) {
+            $data['workers'] = ProjectUserResource::collection($this->workers);
+        }
+
+        if (in_array('viewers', $this->relationships, true)) {
+            $data['viewers'] = ProjectUserResource::collection($this->viewers);
         }
 
         return $data;

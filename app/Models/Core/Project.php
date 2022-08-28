@@ -13,6 +13,12 @@ class Project extends Model
 
     public const STATUS_TYPE = 'projects';
 
+    public const USER_TYPES = [
+        'manager',
+        'worker',
+        'viewer'
+    ];
+
     protected $fillable = [
         'name',
         'image',
@@ -47,5 +53,32 @@ class Project extends Model
     public function status(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Status::class);
+    }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_user')
+            ->withPivot('type');
+    }
+
+    public function managers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_user')
+            ->wherePivot('type', 'manager')
+            ->withPivot('type');
+    }
+
+    public function workers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_user')
+            ->wherePivot('type', 'worker')
+            ->withPivot('type');
+    }
+
+    public function viewer(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_user')
+            ->wherePivot('type', 'viewer')
+            ->withPivot('type');
     }
 }

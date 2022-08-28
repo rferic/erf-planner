@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Core;
 
+use App\Helpers\Core\ProjectHelper;
 use App\Helpers\QueryBuilder\Filters;
 use App\Helpers\QueryBuilder\Pagination;
 use App\Helpers\QueryBuilder\Sorting;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Api\HasList;
 use App\Http\Controllers\Api\HasStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HasPermissionMiddleware;
+use App\Http\Requests\Api\Core\Project\AttachUserRequest;
 use App\Http\Requests\Api\Core\Project\IndexRequest;
 use App\Http\Requests\Api\Core\Project\PostImageRequest;
 use App\Http\Requests\Api\Core\Project\StoreRequest;
@@ -18,7 +20,9 @@ use App\Models\Core\Client;
 use App\Models\Core\Project;
 use App\Models\Core\Status;
 use App\Models\Core\User;
+use App\UseCases\Core\Project\AttachUserUseCase;
 use App\UseCases\Core\Project\DestroyUseCase;
+use App\UseCases\Core\Project\DetachUserUseCase;
 use App\UseCases\Core\Project\GetQueryBuilderUseCase;
 use App\UseCases\Core\Project\PublishImageUseCase;
 use App\UseCases\Core\Project\StoreUseCase;
@@ -50,7 +54,7 @@ class ProjectsController extends Controller
 
         return ApiResponse::done(
             __('Projects has been retrieved'),
-            ApiResponse::parsePagination($results, ProjectResource::class, ['client'])
+            ApiResponse::parsePagination($results, ProjectResource::class, ['client', 'author'])
         );
     }
 
@@ -95,6 +99,20 @@ class ProjectsController extends Controller
         return $this->responseProject($project, __('Image has been published'));
     }
 
+    public function attachUser(AttachUserRequest $request, Project $project, User $user): JsonResponse
+    {
+        ProjectHelper::validateAuthAccess($project, ['manager']);
+        $project = (new AttachUserUseCase($project, $user, $request->input('type')))->action();
+        return $this->responseProject($project, __('User has been attached'));
+    }
+
+    public function detachUser(Project $project, User $user): JsonResponse
+    {
+        ProjectHelper::validateAuthAccess($project, ['manager']);
+        $project = (new DetachUserUseCase($project, $user))->action();
+        return $this->responseProject($project, __('User has been detached'));
+    }
+
     public function destroy(Project $project): JsonResponse
     {
         (new DestroyUseCase($project))->action();
@@ -105,7 +123,7 @@ class ProjectsController extends Controller
     {
         return ApiResponse::done(
             $message,
-            (new ProjectResource($project))->toArray(request())
+            (new ProjectResource($project, ['client', 'author', 'users']))->toArray(request())
         );
     }
 }

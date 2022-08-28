@@ -41,7 +41,7 @@ class UsersController extends Controller
 
         return ApiResponse::done(
             __('Users has been retrieved'),
-            ApiResponse::parsePagination($results, UserResource::class)
+            ApiResponse::parsePagination($results, UserResource::class, ['projects'])
         );
     }
 
@@ -108,7 +108,7 @@ class UsersController extends Controller
 
     private function responseUser(User $user, string $message): JsonResponse
     {
-        return ApiResponse::done($message, (new UserResource($user))->toArray(request()));
+        return ApiResponse::done($message, (new UserResource($user, ['projects']))->toArray(request()));
     }
 
     private function syncRole(User $user, string $role): void

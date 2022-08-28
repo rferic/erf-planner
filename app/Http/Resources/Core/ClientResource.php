@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Core;
 
 use App\Http\Resources\HasRelationships;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Resource;
 
-class ClientResource extends JsonResource
+class ClientResource extends Resource
 {
     use HasRelationships;
 
@@ -38,7 +38,7 @@ class ClientResource extends JsonResource
         ];
 
         if (in_array('projects', $this->relationships, true)) {
-            $data['projects'] = ProjectResource::collection($this->projects);
+            $data['projects'] = ProjectResource::collection($this->projects, ['author']);
         }
 
         return $data;
