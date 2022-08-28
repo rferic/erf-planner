@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Core;
 
-use App\Helpers\Core\ProjectHelper;
 use App\Helpers\QueryBuilder\Filters;
 use App\Helpers\QueryBuilder\Pagination;
 use App\Helpers\QueryBuilder\Sorting;
@@ -11,6 +10,7 @@ use App\Http\Controllers\Api\HasStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HasPermissionMiddleware;
 use App\Http\Requests\Api\Core\Project\AttachUserRequest;
+use App\Http\Requests\Api\Core\Project\DetachUserRequest;
 use App\Http\Requests\Api\Core\Project\IndexRequest;
 use App\Http\Requests\Api\Core\Project\PostImageRequest;
 use App\Http\Requests\Api\Core\Project\StoreRequest;
@@ -101,14 +101,12 @@ class ProjectsController extends Controller
 
     public function attachUser(AttachUserRequest $request, Project $project, User $user): JsonResponse
     {
-        ProjectHelper::validateAuthAccess($project, ['manager']);
         $project = (new AttachUserUseCase($project, $user, $request->input('type')))->action();
         return $this->responseProject($project, __('User has been attached'));
     }
 
-    public function detachUser(Project $project, User $user): JsonResponse
+    public function detachUser(DetachUserRequest $request, Project $project, User $user): JsonResponse
     {
-        ProjectHelper::validateAuthAccess($project, ['manager']);
         $project = (new DetachUserUseCase($project, $user))->action();
         return $this->responseProject($project, __('User has been detached'));
     }

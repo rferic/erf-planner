@@ -6,7 +6,11 @@ use App\Models\Core\Project;
 
 class AttachUserRequest extends \Labelgrup\LaravelUtilities\Core\Requests\ApiRequest
 {
-	/**
+	use ValidateAccess;
+
+    public const USER_TYPES = ['manager'];
+
+    /**
 	 * Get the validation rules that apply to the request.
 	 *
 	 * @return array
