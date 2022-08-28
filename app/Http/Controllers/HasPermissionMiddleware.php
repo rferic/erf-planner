@@ -11,6 +11,13 @@ trait HasPermissionMiddleware
 
     protected function setMiddleware(): void
     {
+        if ($permission = $this->getPermissionScope(self::PERMISSION_SCOPE)) {
+            $this->middleware('has.permission:' . $permission);
+        }
+    }
+
+    protected function getPermissionScope(string $permission_scope): ?string
+    {
         $action = match (request()?->method()) {
             'GET' => 'get',
             'POST', 'PUT', 'PATCH' => 'publish',
@@ -18,8 +25,6 @@ trait HasPermissionMiddleware
             default => null,
         };
 
-        if ($action) {
-            $this->middleware('has.permission:' . self::PERMISSION_SCOPE . '-' . $action);
-        }
+        return $action ? $permission_scope . '-' . $action : null;
     }
 }

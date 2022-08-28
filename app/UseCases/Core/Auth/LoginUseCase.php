@@ -2,7 +2,7 @@
 
 namespace App\UseCases\Core\Auth;
 
-use App\Http\Resources\MeResource;
+use App\Http\Resources\Core\MeResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class LoginUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase

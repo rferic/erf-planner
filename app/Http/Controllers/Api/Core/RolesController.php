@@ -13,7 +13,7 @@ use App\Http\Requests\Api\Core\Role\RevokePermissionRequest;
 use App\Http\Requests\Api\Core\Role\StoreRequest;
 use App\Http\Requests\Api\Core\Role\SyncPermissionsRequest;
 use App\Http\Requests\Api\Core\Role\UpdateRequest;
-use App\Http\Resources\RoleResource;
+use App\Http\Resources\Core\RoleResource;
 use App\UseCases\Core\Role\DestroyUseCase;
 use App\UseCases\Core\Role\GetQueryBuilderUseCase;
 use App\UseCases\Core\Role\GivePermissionUseCase;
@@ -29,7 +29,7 @@ class RolesController extends Controller
 {
     use HasList, HasPermissionMiddleware;
 
-    public const PERMISSION_SCOPE = 'roles';
+    public const PERMISSION_SCOPE = 'settings';
 
     public function index(IndexRequest $request): JsonResponse
     {

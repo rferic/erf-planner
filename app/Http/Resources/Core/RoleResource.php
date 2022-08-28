@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Core;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class RoleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,10 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
             'name' => $this->name,
-            'role' => $this->roles->first()?->name,
-            'permissions' => $this->hasRole(config('permission.role-super-admin'))
+            'permissions' => $this->name === config('permission.role-super-admin')
                 ? ['*']
-                : $this->getAllPermissions()->pluck('name'),
-            'image' => $this->image_url
+                : $this->permissions->pluck('name')
         ];
     }
 }

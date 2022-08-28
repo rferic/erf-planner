@@ -7,7 +7,7 @@ use App\Helpers\QueryBuilder\Sorting;
 use App\Http\Controllers\Api\HasList;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Core\Permission\IndexRequest;
-use App\Http\Resources\PermissionResource;
+use App\Http\Resources\Core\PermissionResource;
 use App\UseCases\Core\Permission\GetQueryBuilderUseCase;
 use Illuminate\Http\JsonResponse;
 use Labelgrup\LaravelUtilities\Helpers\ApiResponse;

@@ -13,7 +13,12 @@ class DestroyUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase
 
     public function action(): Role
     {
-        $this->role->delete();
+        try {
+            $this->role->forceDelete();
+        } catch (\Exception $_) {
+            $this->role->delete();
+        }
+
         return $this->role;
     }
 }

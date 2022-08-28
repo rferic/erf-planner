@@ -13,7 +13,7 @@ use App\Http\Requests\Api\Core\User\IndexRequest;
 use App\Http\Requests\Api\Core\User\PostImageRequest;
 use App\Http\Requests\Api\Core\User\StoreRequest;
 use App\Http\Requests\Api\Core\User\UpdateRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\Core\UserResource;
 use App\Models\Core\User;
 use App\UseCases\Core\User\DestroyUseCase;
 use App\UseCases\Core\User\GetQueryBuilderUseCase;

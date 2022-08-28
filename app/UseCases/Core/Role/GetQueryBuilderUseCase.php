@@ -6,7 +6,8 @@ use Spatie\Permission\Models\Role;
 
 class GetQueryBuilderUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase
 {
-    public function __construct(protected ?string $search = null)
+    public function __construct(
+        protected ?string $search = null)
     {}
 
     public function action(): \Illuminate\Database\Eloquent\Builder

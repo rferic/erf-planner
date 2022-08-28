@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Observers;
+namespace App\Observers\Core;
 
 use App\Models\Core\User;
 use Labelgrup\LaravelUtilities\Helpers\Image;

@@ -16,12 +16,21 @@ class PermissionsSeeder extends Seeder
     public function run(): void
     {
         Permission::upsert([
-            ['name' => 'roles-get', 'guard_name' => 'web'],
-            ['name' => 'roles-publish', 'guard_name' => 'web'],
-            ['name' => 'roles-delete', 'guard_name' => 'web'],
+            ['name' => 'settings-get', 'guard_name' => 'web'],
+            ['name' => 'settings-publish', 'guard_name' => 'web'],
+            ['name' => 'settings-delete', 'guard_name' => 'web'],
             ['name' => 'users-get', 'guard_name' => 'web'],
             ['name' => 'users-publish', 'guard_name' => 'web'],
-            ['name' => 'users-delete', 'guard_name' => 'web']
+            ['name' => 'users-delete', 'guard_name' => 'web'],
+            ['name' => 'statuses-get', 'guard_name' => 'web'],
+            ['name' => 'statuses-publish', 'guard_name' => 'web'],
+            ['name' => 'statuses-delete', 'guard_name' => 'web'],
+            ['name' => 'clients-get', 'guard_name' => 'web'],
+            ['name' => 'clients-publish', 'guard_name' => 'web'],
+            ['name' => 'clients-delete', 'guard_name' => 'web'],
+            ['name' => 'projects-get', 'guard_name' => 'web'],
+            ['name' => 'projects-publish', 'guard_name' => 'web'],
+            ['name' => 'projects-delete', 'guard_name' => 'web']
         ], ['name', 'guard_name']);
     }
 }

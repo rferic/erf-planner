@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\Core\User;
 
+use App\Http\Requests\Api\HasFilters;
 use App\Http\Requests\Api\HasPagination;
 use App\Http\Requests\Api\HasSearchString;
 use App\Http\Requests\Api\HasSorting;
@@ -9,7 +10,7 @@ use Labelgrup\LaravelUtilities\Core\Requests\ApiRequest;
 
 class IndexRequest extends ApiRequest
 {
-    use HasPagination, HasSearchString, HasSorting;
+    use HasFilters, HasPagination, HasSearchString, HasSorting;
 
     public const AVAILABLE_SORTING_PARAMS = ['id', 'name'];
 
@@ -24,20 +25,19 @@ class IndexRequest extends ApiRequest
             $this->paginationRules(),
             $this->searchStringRules(),
             $this->sortingRules(),
-            [
-                'filters' => 'array',
-                'filters.id' => 'numeric',
-                'filters.emails' => 'array',
-                'filters.emails.*' => 'string|email',
-                'filters.email' => 'array',
-                'filters.email.value' => 'string|email',
-                'filters.email.operator' => 'string|in:=,!=,like,notLike',
-                'filters.name' => 'array',
-                'filters.name.value' => 'string',
-                'filters.name.operator' => 'string|in:=,!=,like,notLike',
+            $this->filtersRules([
+                'id' => 'numeric',
+                'emails' => 'array',
+                'emails.*' => 'string|email',
+                'email' => 'array',
+                'email.value' => 'string|email',
+                'email.operator' => 'string|in:=,!=,like,notLike',
+                'name' => 'array',
+                'name.value' => 'string',
+                'name.operator' => 'string|in:=,!=,like,notLike',
                 'roles' => 'array',
-                'roles.*' => 'string|exists:roles,name',
-            ]
+                'roles.*' => 'string|exists:roles,name'
+            ])
         ];
     }
 }

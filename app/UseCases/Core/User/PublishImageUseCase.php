@@ -16,11 +16,7 @@ class PublishImageUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseC
 
 	public function action(): User
 	{
-        if ($this->file) {
-            $src = Image::store($this->file, $this->user->image_folder, 'public');
-        }
-
-        $this->user->image = $this->file ? $src : null;
+        $this->user->image = $this->file ? Image::store($this->file, $this->user->image_folder, 'public') : null;
         $this->user->save();
         return $this->user;
 	}

@@ -17,7 +17,7 @@ class AuthController extends Controller
         $useCase = new LoginUseCase(
             $request->input('email'),
             $request->input('password'),
-            (bool)$request->input('remember_me')
+            $request->input('remember_me')
         );
 
         return ApiResponse::response($useCase->handle()->getData(), Response::HTTP_OK);

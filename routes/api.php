@@ -29,7 +29,7 @@ Route::middleware(['auth:api'])->group(static function () {
         Route::prefix('me')->group(static function () {
             Route::get('/', [\App\Http\Controllers\Api\Core\MeController::class, 'me'])->name('show');
             Route::put('/', [\App\Http\Controllers\Api\Core\MeController::class, 'update'])->name('update');
-            Route::post('image', [\App\Http\Controllers\Api\Core\MeController::class, 'postImage'])->name('postImage');
+            Route::patch('image', [\App\Http\Controllers\Api\Core\MeController::class, 'postImage'])->name('postImage');
             Route::delete('/', [\App\Http\Controllers\Api\Core\MeController::class, 'destroy'])->name('destroy');
         });
 
@@ -42,10 +42,32 @@ Route::middleware(['auth:api'])->group(static function () {
             Route::patch('{role}/sync-permissions', [\App\Http\Controllers\Api\Core\RolesController::class, 'syncPermissions'])->name('syncPermissions');
         });
 
+        Route::resource('languages', \App\Http\Controllers\Api\Core\LanguagesController::class)->except(['show', 'create', 'edit']);
+
         Route::resource('users', \App\Http\Controllers\Api\Core\UsersController::class)->except(['create', 'edit']);
         Route::prefix('users')->group(static function () {
-            Route::post('{user}/image', [\App\Http\Controllers\Api\Core\UsersController::class, 'postImage'])->name('postImage');
+            Route::patch('{user}/image', [\App\Http\Controllers\Api\Core\UsersController::class, 'postImage'])->name('postImage');
             Route::patch('{user}/role', [\App\Http\Controllers\Api\Core\UsersController::class, 'assignRole'])->name('assignRole');
         });
+
+        Route::prefix('clients')->group(static function () {
+            Route::patch('{client}/image', [\App\Http\Controllers\Api\Core\ClientsController::class, 'postImage'])->name('clients.postImage');
+
+            Route::get('statuses', [\App\Http\Controllers\Api\Core\ClientsController::class, 'statuses'])->name('clients.statuses.index');
+            Route::post('statuses', [\App\Http\Controllers\Api\Core\ClientsController::class, 'storeStatus'])->name('clients.statuses.store');
+            Route::put('statuses/{status}', [\App\Http\Controllers\Api\Core\ClientsController::class, 'updateStatus'])->name('clients.statuses.update');
+            Route::delete('statuses/{status}', [\App\Http\Controllers\Api\Core\ClientsController::class, 'destroyStatus'])->name('clients.statuses.destroy');
+        });
+        Route::resource('clients', \App\Http\Controllers\Api\Core\ClientsController::class)->except(['create', 'edit']);
+
+        Route::prefix('projects')->group(static function () {
+            Route::patch('{project}/image', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'postImage'])->name('projects.postImage');
+
+            Route::get('statuses', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'statuses'])->name('projects.statuses.index');
+            Route::post('statuses', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'storeStatus'])->name('projects.statuses.store');
+            Route::put('statuses/{status}', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'updateStatus'])->name('projects.statuses.update');
+            Route::delete('statuses/{status}', [\App\Http\Controllers\Api\Core\ProjectsController::class, 'destroyStatus'])->name('projects.statuses.destroy');
+        });
+        Route::resource('projects', \App\Http\Controllers\Api\Core\ProjectsController::class)->except(['create', 'edit']);
     });
 });

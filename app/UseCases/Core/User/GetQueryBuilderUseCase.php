@@ -2,16 +2,12 @@
 
 namespace App\UseCases\Core\User;
 
-use App\Helpers\QueryBuilder\Filters;
 use App\Models\Core\User;
+use App\UseCases\HasQueryBuilderFilter;
 
 class GetQueryBuilderUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\UseCase
 {
-    public function __construct(
-        protected ?string $search = null,
-        protected ?Filters $filters = null
-    )
-    {}
+    use HasQueryBuilderFilter;
 
     public function action(): \Illuminate\Database\Eloquent\Builder
     {
@@ -54,13 +50,5 @@ class GetQueryBuilderUseCase extends \Labelgrup\LaravelUtilities\Core\UseCases\U
         }
 
         return $query;
-    }
-
-    private function parseValueToOperator(string $operator, string $value): string
-    {
-        return match ($operator) {
-            'like', 'notLike' => '%'.$value.'%',
-            default => $value,
-        };
     }
 }

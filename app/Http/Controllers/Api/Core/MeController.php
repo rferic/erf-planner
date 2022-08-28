@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Core;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Core\Me\PostImageRequest;
 use App\Http\Requests\Api\Core\Me\UpdateRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\Core\UserResource;
 use App\Models\Core\User;
 use App\UseCases\Core\User\DestroyUseCase;
 use App\UseCases\Core\User\PublishImageUseCase;
